@@ -8,6 +8,7 @@ namespace KhWebApi.WebApi.Mappings.User
         public UserProfile()
         {
             CreateMap<UserDto, Models.User>();
+            CreateMap<Models.User, ReadonlyUserDto>();
         }
     }
 }

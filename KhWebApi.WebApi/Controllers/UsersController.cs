@@ -23,15 +23,15 @@ namespace KhWebApi.WebApi.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<IEnumerable<ReadonlyUserDto>> GetUsers()
         {
             var users = await _unitOfWork.UserRepository.GetAllAsync();
-            return users;
+            return _mapper.Map<IEnumerable<ReadonlyUserDto>>(users);
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid id)
+        public async Task<ActionResult<ReadonlyUserDto>> GetUser(Guid id)
         {
             var user = await _unitOfWork.UserRepository.GetByIdAsync(id);
 
@@ -39,8 +39,8 @@ namespace KhWebApi.WebApi.Controllers
             {
                 return NotFound();
             }
-
-            return user;
+            var userDto = _mapper.Map<ReadonlyUserDto>(user);
+            return userDto;
         }
 
         // PUT: api/Users/5
@@ -79,7 +79,7 @@ namespace KhWebApi.WebApi.Controllers
             await _unitOfWork.UserRepository.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction("GetUser", new { id = user.Id }, _mapper.Map<ReadonlyUserDto>(user));
         }
 
         // DELETE: api/Users/5
