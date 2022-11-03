@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "KhWebApi.WebApi": {
+    "HeroKh.Api.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

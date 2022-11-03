@@ -1,4 +1,4 @@
-﻿namespace KhWebApi.WebApi.Models
+﻿namespace HeroKh.Api.Web.Models
 {
     public class User : BaseEntity
     {

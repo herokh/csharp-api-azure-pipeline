@@ -1,7 +1,7 @@
-﻿using KhWebApi.WebApi.Models;
+﻿using HeroKh.Api.Web.Models;
 using System.Linq.Expressions;
 
-namespace KhWebApi.WebApi.Repositories.Interfaces
+namespace HeroKh.Api.Web.Repositories.Interfaces
 {
     public interface IReadonlyRepository<T> where T : BaseEntity
     {

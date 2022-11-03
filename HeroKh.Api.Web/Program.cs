@@ -1,7 +1,7 @@
-using KhWebApi.WebApi.Database;
-using KhWebApi.WebApi.Models;
-using KhWebApi.WebApi.Repositories.Implementations;
-using KhWebApi.WebApi.Repositories.Interfaces;
+using HeroKh.Api.Web.Database;
+using HeroKh.Api.Web.Models;
+using HeroKh.Api.Web.Repositories.Implementations;
+using HeroKh.Api.Web.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;

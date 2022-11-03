@@ -1,4 +1,4 @@
-﻿namespace KhWebApi.WebApi.Repositories.Interfaces
+﻿namespace HeroKh.Api.Web.Repositories.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

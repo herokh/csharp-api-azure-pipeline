@@ -1,4 +1,4 @@
-﻿namespace KhWebApi.WebApi.DTOs.User
+﻿namespace HeroKh.Api.Web.DTOs.User
 {
     public class ReadonlyUserDto : UserDto
     {

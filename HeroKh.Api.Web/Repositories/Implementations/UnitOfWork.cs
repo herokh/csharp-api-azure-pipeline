@@ -1,7 +1,7 @@
-﻿using KhWebApi.WebApi.Models;
-using KhWebApi.WebApi.Repositories.Interfaces;
+﻿using HeroKh.Api.Web.Models;
+using HeroKh.Api.Web.Repositories.Interfaces;
 
-namespace KhWebApi.WebApi.Repositories.Implementations
+namespace HeroKh.Api.Web.Repositories.Implementations
 {
     public class UnitOfWork : IUnitOfWork
     {

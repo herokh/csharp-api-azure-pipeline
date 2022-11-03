@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace KhWebApi.WebApi.Models
+namespace HeroKh.Api.Web.Models
 {
     public class ModelContext : DbContext
     {

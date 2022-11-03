@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using KhWebApi.WebApi.Models;
-using KhWebApi.WebApi.DTOs.User;
+using HeroKh.Api.Web.Models;
+using HeroKh.Api.Web.DTOs.User;
 using AutoMapper;
-using KhWebApi.WebApi.Repositories.Interfaces;
-using KhWebApi.WebApi.DTOs.Product;
+using HeroKh.Api.Web.Repositories.Interfaces;
+using HeroKh.Api.Web.DTOs.Product;
 
-namespace KhWebApi.WebApi.Controllers
+namespace HeroKh.Api.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

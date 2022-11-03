@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace KhWebApi.WebApi.Enums
+namespace HeroKh.Api.Web.Enums
 {
     public static class EnumConvertor
     {

@@ -1,4 +1,4 @@
-﻿namespace KhWebApi.WebApi.DTOs.Product
+﻿namespace HeroKh.Api.Web.DTOs.Product
 {
     public class ProductDto
     {

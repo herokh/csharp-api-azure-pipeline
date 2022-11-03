@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using KhWebApi.WebApi.DTOs.User;
+using HeroKh.Api.Web.DTOs.User;
 
-namespace KhWebApi.WebApi.Mappings.User
+namespace HeroKh.Api.Web.Mappings.User
 {
     public class UserProfile : Profile
     {

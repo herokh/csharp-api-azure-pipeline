@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using KhWebApi.WebApi.DTOs.Product;
+using HeroKh.Api.Web.DTOs.Product;
 
-namespace KhWebApi.WebApi.Mappings.Product
+namespace HeroKh.Api.Web.Mappings.Product
 {
     public class ProductProfile : Profile
     {

@@ -1,6 +1,6 @@
-﻿using KhWebApi.WebApi.Enums;
+﻿using HeroKh.Api.Web.Enums;
 
-namespace KhWebApi.WebApi.Models
+namespace HeroKh.Api.Web.Models
 {
     public class ProductCategory : BaseEntity
     {

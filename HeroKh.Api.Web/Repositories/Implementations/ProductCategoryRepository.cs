@@ -1,9 +1,9 @@
-﻿using KhWebApi.WebApi.Enums;
-using KhWebApi.WebApi.Models;
-using KhWebApi.WebApi.Repositories.Interfaces;
+﻿using HeroKh.Api.Web.Enums;
+using HeroKh.Api.Web.Models;
+using HeroKh.Api.Web.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace KhWebApi.WebApi.Repositories.Implementations
+namespace HeroKh.Api.Web.Repositories.Implementations
 {
     public class ProductCategoryRepository : ReadonlyRepository<ProductCategory>, IProductCategoryRepository
     {

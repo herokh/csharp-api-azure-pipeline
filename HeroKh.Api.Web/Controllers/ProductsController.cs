@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using KhWebApi.WebApi.Models;
-using KhWebApi.WebApi.Repositories.Interfaces;
+using HeroKh.Api.Web.Models;
+using HeroKh.Api.Web.Repositories.Interfaces;
 using AutoMapper;
-using KhWebApi.WebApi.DTOs.User;
-using KhWebApi.WebApi.DTOs.Product;
+using HeroKh.Api.Web.DTOs.User;
+using HeroKh.Api.Web.DTOs.Product;
 using System.Security.Cryptography;
-using KhWebApi.WebApi.Repositories.Implementations;
-using KhWebApi.WebApi.Enums;
+using HeroKh.Api.Web.Repositories.Implementations;
+using HeroKh.Api.Web.Enums;
 
-namespace KhWebApi.WebApi.Controllers
+namespace HeroKh.Api.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

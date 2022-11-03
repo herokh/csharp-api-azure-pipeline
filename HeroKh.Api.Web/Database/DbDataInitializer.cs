@@ -1,7 +1,7 @@
-﻿using KhWebApi.WebApi.Enums;
-using KhWebApi.WebApi.Models;
+﻿using HeroKh.Api.Web.Enums;
+using HeroKh.Api.Web.Models;
 
-namespace KhWebApi.WebApi.Database
+namespace HeroKh.Api.Web.Database
 {
     public static class DbDataInitializer
     {

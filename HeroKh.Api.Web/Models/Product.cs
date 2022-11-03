@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace KhWebApi.WebApi.Models
+namespace HeroKh.Api.Web.Models
 {
     public class Product : BaseEntity
     {

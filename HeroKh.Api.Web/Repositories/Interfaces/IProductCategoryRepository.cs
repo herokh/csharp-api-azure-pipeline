@@ -1,7 +1,7 @@
-﻿using KhWebApi.WebApi.Enums;
-using KhWebApi.WebApi.Models;
+﻿using HeroKh.Api.Web.Enums;
+using HeroKh.Api.Web.Models;
 
-namespace KhWebApi.WebApi.Repositories.Interfaces
+namespace HeroKh.Api.Web.Repositories.Interfaces
 {
     public interface IProductCategoryRepository : IReadonlyRepository<ProductCategory>
     {
