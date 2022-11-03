@@ -5,6 +5,7 @@
         IUserRepository UserRepository { get; }
         IProductRepository ProductRepository { get; }
         IProductCategoryRepository ProductCategoryRepository { get; }
+        ICartRepository CartRepository { get; }
 
         Task<int> SaveChangesAsync();
     }

@@ -9,6 +9,7 @@ namespace HeroKh.Api.Web.Repositories.Implementations
         public IUserRepository UserRepository { get; private set; }
         public IProductRepository ProductRepository { get; private set; }
         public IProductCategoryRepository ProductCategoryRepository { get; private set; }
+        public ICartRepository CartRepository { get; private set; }
 
         public UnitOfWork(ModelContext context)
         {
@@ -16,6 +17,7 @@ namespace HeroKh.Api.Web.Repositories.Implementations
             UserRepository = new UserRepository(_context);
             ProductRepository = new ProductRepository(_context);
             ProductCategoryRepository = new ProductCategoryRepository(_context);
+            CartRepository = new CartRepository(_context);
         }
 
         public async Task<int> SaveChangesAsync()

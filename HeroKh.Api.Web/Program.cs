@@ -2,9 +2,13 @@ using HeroKh.Api.Web.Database;
 using HeroKh.Api.Web.Models;
 using HeroKh.Api.Web.Repositories.Implementations;
 using HeroKh.Api.Web.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var WebPortalOriginPolicy = "khwebportal";
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +28,29 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShoppingWebApi", Version = "v1" });
+    c.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "JSON Web Token based security",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string>()
+        }
+    });
 });
 
 builder.Services.AddCors(options =>
@@ -32,6 +59,28 @@ builder.Services.AddCors(options =>
                       {
                           policy.WithOrigins("http://localhost:4200");
                       }));
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = true
+    };
+});
+builder.Services.AddAuthorization();
+builder.Services.AddEndpointsApiExplorer();
+
 var app = builder.Build();
 
 using (var context = app.Services.CreateAsyncScope())
@@ -49,6 +98,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(WebPortalOriginPolicy);
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

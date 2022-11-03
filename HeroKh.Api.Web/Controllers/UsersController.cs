@@ -4,16 +4,17 @@ using HeroKh.Api.Web.Models;
 using HeroKh.Api.Web.DTOs.User;
 using AutoMapper;
 using HeroKh.Api.Web.Repositories.Interfaces;
-using HeroKh.Api.Web.DTOs.Product;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HeroKh.Api.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        public readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public UsersController(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -21,19 +22,11 @@ namespace HeroKh.Api.Web.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<IEnumerable<ReadonlyUserDto>> GetUsers()
-        {
-            var users = await _unitOfWork.UserRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ReadonlyUserDto>>(users);
-        }
-
         // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ReadonlyUserDto>> GetUser(Guid id)
+        [HttpGet]
+        public async Task<ActionResult<ReadonlyUserDto>> GetUser()
         {
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(id);
+            var user = await _unitOfWork.UserRepository.GetByEmailAddressAsync(User.Identity.Name);
 
             if (user == null)
             {
@@ -45,11 +38,12 @@ namespace HeroKh.Api.Web.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(Guid id, UserDto userDto)
+        [HttpPut]
+        public async Task<IActionResult> PutUser(UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-            await _unitOfWork.UserRepository.UpdateAsync(id, user);
+            var currentUser = await _unitOfWork.UserRepository.GetByEmailAddressAsync(User.Identity.Name);
+            await _unitOfWork.UserRepository.UpdateAsync(currentUser.Id, user);
 
             try
             {
@@ -57,7 +51,7 @@ namespace HeroKh.Api.Web.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await _unitOfWork.UserRepository.ExistsAsync(id))
+                if (!await _unitOfWork.UserRepository.ExistsAsync(currentUser.Id))
                 {
                     return NotFound();
                 }
@@ -66,48 +60,6 @@ namespace HeroKh.Api.Web.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(UserDto userDto)
-        {
-            var id = Guid.Empty;
-            try
-            {
-                var user = _mapper.Map<User>(userDto);
-                await _unitOfWork.UserRepository.AddAsync(user);
-                id = user.Id;
-                await _unitOfWork.SaveChangesAsync();
-                return CreatedAtAction("GetUser", new { id = user.Id });
-            }
-            catch (DbUpdateException)
-            {
-                if (await _unitOfWork.UserRepository.ExistsAsync(id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(Guid id)
-        {
-            if (!await _unitOfWork.UserRepository.ExistsAsync(id))
-            {
-                return NotFound();
-            }
-
-            await _unitOfWork.UserRepository.RemoveAsync(id);
-            await _unitOfWork.SaveChangesAsync();
 
             return NoContent();
         }

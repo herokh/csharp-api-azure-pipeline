@@ -8,6 +8,7 @@ namespace HeroKh.Api.Web.Mappings.User
         public UserProfile()
         {
             CreateMap<UserDto, Models.User>();
+            CreateMap<CreateUserDto, Models.User>();
             CreateMap<Models.User, ReadonlyUserDto>();
         }
     }

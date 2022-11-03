@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using HeroKh.Api.Web.Models;
 
 namespace HeroKh.Api.Web.Models
 {
@@ -33,5 +34,7 @@ namespace HeroKh.Api.Web.Models
 
             return base.SaveChangesAsync(cancellationToken);
         }
+
+        public DbSet<HeroKh.Api.Web.Models.Cart> Cart { get; set; }
     }
 }

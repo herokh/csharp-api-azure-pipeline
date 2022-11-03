@@ -11,6 +11,10 @@ namespace HeroKh.Api.Web.Database
             {
                 await model.Database.EnsureCreatedAsync();
 
+                // users
+                await model.Users.AddAsync(new User { EmailAddress = "test", DisplayName = "test", Password = "test" });
+
+                // product categories
                 await model.ProductCategory.AddAsync(new ProductCategory { Name = "Computer", Slug = EnumProductCategory.Computer });
                 await model.ProductCategory.AddAsync(new ProductCategory { Name = "Mobile", Slug = EnumProductCategory.Mobile });
 
