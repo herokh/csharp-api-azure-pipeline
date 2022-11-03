@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using HeroKh.Api.Web.Models;
 
 namespace HeroKh.Api.Web.Models
 {
@@ -13,6 +12,8 @@ namespace HeroKh.Api.Web.Models
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<ProductCategory> ProductCategory { get; set; } = null!;
+        public DbSet<Cart> Cart { get; set; } = null!;
+        public DbSet<CartItem> CartItem { get; set; } = null!;
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -34,7 +35,5 @@ namespace HeroKh.Api.Web.Models
 
             return base.SaveChangesAsync(cancellationToken);
         }
-
-        public DbSet<HeroKh.Api.Web.Models.Cart> Cart { get; set; }
     }
 }

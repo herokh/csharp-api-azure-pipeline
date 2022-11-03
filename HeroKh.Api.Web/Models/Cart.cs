@@ -1,11 +1,13 @@
-﻿using HeroKh.Api.Web.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HeroKh.Api.Web.Models
 {
     public class Cart : BaseEntity
     {
         public Guid UserId { get; set; }
-        public Guid ProductId { get; set; }
-        public int Quantity { get; set; }
+        [ForeignKey("UserId")]
+        public User? User { get; set; }
+
+        public List<CartItem>? CartItems { get; set; }
     }
 }

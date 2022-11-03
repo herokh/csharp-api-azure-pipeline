@@ -4,23 +4,30 @@ using HeroKh.Api.Web.Repositories.Implementations;
 using HeroKh.Api.Web.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
-var WebPortalOriginPolicy = "khwebportal";
+const string WebPortalOriginPolicy = "khwebportal";
+const string DatabaseName = "ShoppingWebApi";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<ModelContext>(opt =>
 {
-    opt.UseInMemoryDatabase("ShoppingWebApi");
-    opt.EnableSensitiveDataLogging(true);
+    opt.UseInMemoryDatabase(DatabaseName);
+    //opt.EnableSensitiveDataLogging(true);
+    opt.ConfigureWarnings(w => w.Ignore(InMemoryEventId.TransactionIgnoredWarning));
 });
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
@@ -74,7 +81,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = false,
+        ValidateLifetime = true,
         ValidateIssuerSigningKey = true
     };
 });

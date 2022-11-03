@@ -3,6 +3,7 @@ using HeroKh.Api.Web.Models;
 using AutoMapper;
 using HeroKh.Api.Web.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using HeroKh.Api.Web.DTOs.Cart;
 
 namespace HeroKh.Api.Web.Controllers
 {
@@ -22,33 +23,34 @@ namespace HeroKh.Api.Web.Controllers
 
         // GET: api/Carts
         [HttpGet]
-        public async Task<IEnumerable<Cart>> GetCart()
+        public async Task<CartDto> GetCart()
         {
-            return await _unitOfWork.CartRepository.GetAllAsync();
-        }
-
-        // PUT: api/Carts/items/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("items/{id}")]
-        public async Task<IActionResult> PutCartItem(Guid id, Cart cart)
-        {
-
-            return NoContent();
+            var currentUser = await _unitOfWork.UserRepository.GetByEmailAddressAsync(User.Identity.Name);
+            var cart = await _unitOfWork.CartRepository.GetCartIncludeCartItemsAsync(currentUser.Id);
+            var cartDto = _mapper.Map<CartDto>(cart);
+            if (cartDto != null)
+                cartDto.TotalPrice = cartDto.CartItems.Sum(x => x.Product.Price * x.Quantity);
+            return cartDto ?? new CartDto();
         }
 
         // POST: api/Carts/items
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("items")]
-        public async Task<ActionResult<Cart>> PostCartItem(Cart cart)
+        public async Task<ActionResult> PostCartItem(IEnumerable<CartItemDto> items)
         {
-            return NoContent();
+            var currentUser = await _unitOfWork.UserRepository.GetByEmailAddressAsync(User.Identity.Name);
+            var cartItems = _mapper.Map<IEnumerable<CartItem>>(items);
+            var success = await _unitOfWork.CartRepository.AddCartItemAsync(currentUser.Id, cartItems);
+            return success ? Ok() : BadRequest();
         }
 
-        // DELETE: api/Carts/items/5
-        [HttpDelete("items/{id}")]
-        public async Task<IActionResult> DeleteCartItem(Guid id)
+        // DELETE: api/Carts
+        [HttpDelete]
+        public async Task<IActionResult> ClearUserCart()
         {
-
+            var currentUser = await _unitOfWork.UserRepository.GetByEmailAddressAsync(User.Identity.Name);
+            await _unitOfWork.CartRepository.ClearUserCartAsync(currentUser.Id);
+            await _unitOfWork.SaveChangesAsync();
             return NoContent();
         }
     }

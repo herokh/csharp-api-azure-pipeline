@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using HeroKh.Api.Web.Models;
 using HeroKh.Api.Web.DTOs.User;
 using AutoMapper;
@@ -41,25 +40,18 @@ namespace HeroKh.Api.Web.Controllers
         [HttpPut]
         public async Task<IActionResult> PutUser(UserDto userDto)
         {
-            var user = _mapper.Map<User>(userDto);
             var currentUser = await _unitOfWork.UserRepository.GetByEmailAddressAsync(User.Identity.Name);
-            await _unitOfWork.UserRepository.UpdateAsync(currentUser.Id, user);
 
-            try
+            var existsEmailAddress = await _unitOfWork.UserRepository.GetByEmailAddressAsync(userDto.EmailAddress);
+
+            if (existsEmailAddress != null && existsEmailAddress.EmailAddress != currentUser.EmailAddress)
             {
-                await _unitOfWork.SaveChangesAsync();
+                throw new Exception("The email already in used.");
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await _unitOfWork.UserRepository.ExistsAsync(currentUser.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            var user = _mapper.Map<User>(userDto);
+            await _unitOfWork.UserRepository.UpdateAsync(currentUser.Id, user);
+            await _unitOfWork.SaveChangesAsync();
 
             return NoContent();
         }

@@ -9,8 +9,8 @@ namespace HeroKh.Api.Web.Mappings.Product
         {
             CreateMap<ProductDto, Models.Product>();
             CreateMap<Models.Product, ReadonlyProductDto>()
-                .ForMember(m => m.ProductCategorySlug, opt => opt.MapFrom(p => p.ProductCategory!.Slug))
-                .ForMember(m => m.ProductCategoryName, opt => opt.MapFrom(p => p.ProductCategory!.Name));
+                .ForMember(m => m.CategorySlug, opt => opt.MapFrom(p => p.ProductCategory!.Slug))
+                .ForMember(m => m.CategoryName, opt => opt.MapFrom(p => p.ProductCategory!.Name));
         }
     }
 }

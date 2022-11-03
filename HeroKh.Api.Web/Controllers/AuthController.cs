@@ -25,7 +25,7 @@ namespace HeroKh.Api.Web.Controllers
         // POST: api/Auth/login
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("login")]
-        public async Task<ActionResult<Cart>> Login(AuthLoginDto authLoginDto)
+        public async Task<ActionResult<CartItem>> Login(AuthLoginDto authLoginDto)
         {
             var user = await _unitOfWork.UserRepository.GetByEmailAddressAsync(authLoginDto.UserEmail);
 

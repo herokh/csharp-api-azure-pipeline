@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using HeroKh.Api.Web.Models;
 using HeroKh.Api.Web.Repositories.Interfaces;
 using AutoMapper;
 using HeroKh.Api.Web.DTOs.Product;
-using HeroKh.Api.Web.Enums;
-using Microsoft.AspNetCore.Authorization;
 
 namespace HeroKh.Api.Web.Controllers
 {
