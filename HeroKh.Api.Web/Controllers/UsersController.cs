@@ -4,6 +4,7 @@ using KhWebApi.WebApi.Models;
 using KhWebApi.WebApi.DTOs.User;
 using AutoMapper;
 using KhWebApi.WebApi.Repositories.Interfaces;
+using KhWebApi.WebApi.DTOs.Product;
 
 namespace KhWebApi.WebApi.Controllers
 {
@@ -12,7 +13,6 @@ namespace KhWebApi.WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-
         public readonly IMapper _mapper;
 
         public UsersController(IUnitOfWork unitOfWork, IMapper mapper)
@@ -75,11 +75,26 @@ namespace KhWebApi.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserDto userDto)
         {
-            var user = _mapper.Map<User>(userDto);
-            await _unitOfWork.UserRepository.AddAsync(user);
-            await _unitOfWork.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, _mapper.Map<ReadonlyUserDto>(user));
+            var id = Guid.Empty;
+            try
+            {
+                var user = _mapper.Map<User>(userDto);
+                await _unitOfWork.UserRepository.AddAsync(user);
+                id = user.Id;
+                await _unitOfWork.SaveChangesAsync();
+                return CreatedAtAction("GetUser", new { id = user.Id });
+            }
+            catch (DbUpdateException)
+            {
+                if (await _unitOfWork.UserRepository.ExistsAsync(id))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         // DELETE: api/Users/5

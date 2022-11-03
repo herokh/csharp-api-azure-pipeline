@@ -7,12 +7,15 @@ namespace KhWebApi.WebApi.Repositories.Implementations
     {
         private ModelContext _context;
         public IUserRepository UserRepository { get; private set; }
-
+        public IProductRepository ProductRepository { get; private set; }
+        public IProductCategoryRepository ProductCategoryRepository { get; private set; }
 
         public UnitOfWork(ModelContext context)
         {
             _context = context;
             UserRepository = new UserRepository(_context);
+            ProductRepository = new ProductRepository(_context);
+            ProductCategoryRepository = new ProductCategoryRepository(_context);
         }
 
         public async Task<int> SaveChangesAsync()

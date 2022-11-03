@@ -1,7 +1,9 @@
+using KhWebApi.WebApi.Database;
 using KhWebApi.WebApi.Models;
 using KhWebApi.WebApi.Repositories.Implementations;
 using KhWebApi.WebApi.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 var WebPortalOriginPolicy = "khwebportal";
@@ -30,8 +32,12 @@ builder.Services.AddCors(options =>
                       {
                           policy.WithOrigins("http://localhost:4200");
                       }));
-
 var app = builder.Build();
+
+using (var context = app.Services.CreateAsyncScope())
+{
+    await DbDataInitializer.SeedDataAsync(context.ServiceProvider.GetRequiredService<ModelContext>());
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

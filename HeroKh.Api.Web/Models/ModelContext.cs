@@ -10,7 +10,8 @@ namespace KhWebApi.WebApi.Models
         }
 
         public DbSet<User> Users { get; set; } = null!;
-
+        public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<ProductCategory> ProductCategory { get; set; } = null!;
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
