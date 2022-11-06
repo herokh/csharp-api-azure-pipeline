@@ -1,0 +1,34 @@
+﻿using HeroKh.Api.Web.Models;
+using HeroKh.Api.Web.Repositories.Interfaces;
+
+namespace HeroKh.Api.Web.Repositories.Implementations
+{
+    public class UnitOfWork : IUnitOfWork
+    {
+        private ModelContext _context;
+        public IUserRepository UserRepository { get; private set; }
+        public IProductRepository ProductRepository { get; private set; }
+        public IProductCategoryRepository ProductCategoryRepository { get; private set; }
+        public ICartRepository CartRepository { get; private set; }
+
+        public UnitOfWork(ModelContext context)
+        {
+            _context = context;
+            UserRepository = new UserRepository(_context);
+            ProductRepository = new ProductRepository(_context);
+            ProductCategoryRepository = new ProductCategoryRepository(_context);
+            CartRepository = new CartRepository(_context);
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+            GC.SuppressFinalize(this);
+        }
+    }
+}
